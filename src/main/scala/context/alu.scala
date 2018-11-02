@@ -46,7 +46,7 @@ object alu {
 
     private def add(args: List[Value]) = {
       val args2 = args.map(toInt).filter(_ != None)
-      if (args2.size == args.size) args2.flatten.reduce(_+_)
+      if (args2.size == args.size) args2.flatten.reduce(_+_) // weird highlighting error in IntelliJ
       else {
         val args3 = args.map(toReal).filter(_ != None)
         if (args3.size == args.size) args3.flatten.reduce(_+_)
