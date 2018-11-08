@@ -18,7 +18,6 @@ class Jedi1Parsers extends RegexParsers {
 
   //  def expression: Parser[Expression] = declaration | term | failure("Invalid")
   def expression: Parser[Expression] = declaration | conditional | disjunction | failure("Invalid expression")
-
   def declaration: Parser[Declaration] = "def" ~ identifier ~ "=" ~ expression ^^ {
     case "def"~id~"="~exp => Declaration(id, exp)
   }
@@ -33,7 +32,7 @@ class Jedi1Parsers extends RegexParsers {
     case con ~ more => Disjunction(con::more)
   }
 
-  // conjunction ::= equality ~ ("&&" ~ equality)*
+  // conjunction ::= equality ~ ("&&" ~ equality)* star is repetition (rep)
   def conjunction: Parser[Expression] = equality ~ rep("&&" ~> equality) ^^ {
     case con ~ Nil => con
     case con ~ more => Conjunction(con::more)
@@ -45,10 +44,10 @@ class Jedi1Parsers extends RegexParsers {
     case con ~ more => FunCall(Identifier("equals"), con::more)
   }
 
-  // inequality ::= sum ~ (("<" | ">" | "!=") ~ sum)?
+  // inequality ::= sum ~ (("<" | ">" | "!=") ~ sum)? optional is optional (opt)
   def inequality: Parser[Expression] = sum ~ opt(("<" | ">" | "!=") ~ sum) ^^ {
     case con ~ None => con
-    case (t ~ blah) => parseInequality(t, blah.get)
+    case t ~ some => parseInequality(t, some.get)
   }
 
   private def parseInequality(t: Expression, terms: ~[String, Expression]) = {
@@ -60,11 +59,8 @@ class Jedi1Parsers extends RegexParsers {
   }
 
   // negate(exp) = 0 - exp
-  private def negate(exp: Expression): Expression = {
-    val sub = Identifier("sub")
-    val zero = Integer(0)
-    FunCall(sub, List(zero, exp))
-  }
+  private def negate(exp: Expression): Expression = FunCall(Identifier("sub"), List(Integer(0), exp))
+
 
   // sum ::= product ~ ("+" | "-") ~ product)*  
   def sum: Parser[Expression] = product ~ rep(("+"|"-") ~ product ^^ {
@@ -72,7 +68,7 @@ class Jedi1Parsers extends RegexParsers {
     case "-"~s=> negate(s)
   })^^{
     case p~Nil=> p
-    case p~rest=>FunCall(Identifier("add"), p::rest)
+    case p~rest =>FunCall(Identifier("add"), p::rest)
   }
 
   // product ::= term ~ (("*" | "/") ~ term)*
