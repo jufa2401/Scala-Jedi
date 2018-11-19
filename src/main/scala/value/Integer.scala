@@ -1,5 +1,5 @@
 package value
-import expression._
+import expression.Literal
 // Pretty much the same class as real, but with Ints instead of doubles, and made to a case class instead of companion object
 case class Integer(val value: Int) extends Literal with Ordered[Integer] with Equals {
   def + (other: Integer): Integer = Integer(value + other.value)

@@ -1,5 +1,6 @@
 package value
-import expression._
+
+import expression.Literal
 
 case class Chars(val value: String) extends Literal with Ordered[Chars] {
   override def toString: String = value

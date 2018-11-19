@@ -1,8 +1,7 @@
 package expression
+import context.Environment
+import value.{Boole, Notification, Value}
 
-import context._
-import value._
-// TODO: Check through
 case class Conditional(val cond: Expression, val cons: Expression, val alt: Expression = null) extends SpecialForm {
   def execute(env: Environment): Value = {
     if(cond.execute(env).asInstanceOf[Boole].value) cons.execute(env)

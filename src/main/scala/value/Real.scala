@@ -1,5 +1,5 @@
 package value
-import expression._
+import expression.Literal
 
 case class Real(val value: Double) extends Literal with Ordered[Real] with Equals {
   def + (other: Real) = Real(value + other.value)

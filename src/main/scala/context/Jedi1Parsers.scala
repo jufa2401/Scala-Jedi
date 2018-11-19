@@ -1,8 +1,7 @@
 package context
 
 import expression._
-import value._
-
+import value.{Boole, Chars, Integer, Real}
 import scala.util.parsing.combinator._
 
 /*
@@ -41,7 +40,8 @@ class Jedi1Parsers extends RegexParsers {
   // equality ::= inequality ~ ("==" ~ inequality)*
   def equality: Parser[Expression] = inequality ~ rep("==" ~> inequality) ^^ {
     case con ~ Nil => con
-    case con ~ more => FunCall(Identifier("equals"), con::more)
+    case con ~ more =>
+      FunCall(Identifier("equals"), con::more)
   }
 
   // inequality ::= sum ~ (("<" | ">" | "!=") ~ sum)? optional is optional (opt)
