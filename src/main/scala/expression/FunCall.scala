@@ -1,8 +1,7 @@
 package expression
 
-import value.Value
-import value.Closure
-import context.{Environment,alu,TypeException,UndefinedException}
+import context.{Environment, TypeException, UndefinedException, alu}
+import value.{Closure, Value}
 
 case class FunCall(val operator: Identifier, val operands: List[Expression]) extends Expression {
 

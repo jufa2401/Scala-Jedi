@@ -1,3 +1,3 @@
 package expression
 
-trait SpecialForm extends Expression{}
+trait SpecialForm extends Expression
