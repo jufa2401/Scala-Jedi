@@ -32,12 +32,10 @@ class Jedi3Parsers extends Jedi2Parsers {
   }
 //  break ::= "break".
 def break: Parser[Break] = "break" ^^ {
-  case None => Nil
-  case  "break" =>  break(Identifier("break"), exp::Nil)
-  case _ => Break(Nil)
+  case "break" => Break()
 }
 
-  override def term: Parser[Expression]  = loop | switch | thunk | lambda | funCall | block | assignment | dereference | literal | "("~>expression<~")"
+  override def term: Parser[Expression]  = break | loop | switch | thunk | lambda | funCall | block | assignment | dereference | literal | "("~>expression<~")"
 
 //  def switch: Parser[Expression] = "switch" ~ expression ~ "{" ~ expression ~ rep(";" ~ expression) ~ "}" ^^{
 //    case expression =>
