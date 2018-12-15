@@ -16,3 +16,9 @@ def tri = lambda (n) { def result = var(0); def count = var(0); while([count] < 
 tri(5)
 tri(6)
 
+
+
+def u = var(3)
+def w = var(9)
+
+def swap = lambda(x,y)  def xs = x; x=y; y=xs;

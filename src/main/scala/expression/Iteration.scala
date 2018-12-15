@@ -1,16 +1,17 @@
 package expression
-import context.{Environment, TypeException}
-import value.{Boole, Value}
+import context._
+import value._
 
-case class Iteration(var condition: Expression, var body: Expression) extends SpecialForm {
+case class Iteration(condition: Expression, body: Expression) extends SpecialForm {
   override def execute(env: Environment): Value = {
-    var result: Value = null
-    try {
-      while (condition.execute(env).asInstanceOf[Boole].value) result = body.execute(env)
-      result
+    var break = false
+    while(condition.execute(env) == Boole(true)) {
+      try {
+        if(!break) body.execute(env)
+      } catch {
+        case exception: BreakException => println(exception.gripe); break = true
+      }
     }
-    catch {
-      case _: ClassCastException => throw new TypeException("Condition must be of type Boole")
-    }
+    Notification.DONE
   }
 }

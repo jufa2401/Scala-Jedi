@@ -1,8 +1,7 @@
+import value.{Integer, Real}
 
 
 object NumberTest extends App {
-
-  import value.{Integer, Real}
 
   var i1 = Integer(7)
   var i2 = Integer(6)
